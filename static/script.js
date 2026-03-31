@@ -8,7 +8,7 @@
 // ─────────────────────────────────────────────────
 // State
 // ─────────────────────────────────────────────────
-let currentFacingMode = "user";
+let currentFacingMode = "environment";
 let stream;
 let cameraStream   = null;
 let croppedDataURL = null;  // source image data URL
@@ -20,6 +20,9 @@ let framedDataURL  = null;  // result after frame applied
 const $ = id => document.getElementById(id);
 
 const btnOpenCamera   = $('btn-open-camera');
+const btnFlipCamera = document.getElementById("btnFlipCamera");
+
+btnFlipCamera.addEventListener("click", flipCamera);
 const btnCapture      = $('btn-capture');
 const btnCloseCamera  = $('btn-close-camera');
 const fileInput       = $('file-input');
@@ -100,10 +103,18 @@ function goToStep(n) {
 btnOpenCamera.addEventListener('click', async () => {
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
-      audio: false,
+      video: { 
+  facingMode: currentFacingMode,
+  width: { ideal: 1280 }, 
+  height: { ideal: 720 } 
+},
     });
     cameraPreview.srcObject = cameraStream;
+    if (currentFacingMode === "user") {
+  cameraPreview.style.transform = "scaleX(-1)";
+} else {
+  cameraPreview.style.transform = "scaleX(1)";
+    }
     cameraContainer.classList.remove('hidden');
     btnOpenCamera.disabled = true;
     fileInput.disabled = true;
@@ -119,6 +130,16 @@ btnOpenCamera.addEventListener('click', async () => {
 btnCloseCamera.addEventListener('click', stopCamera);
 
 function stopCamera() {
+  function flipCamera() {
+  currentFacingMode = currentFacingMode === "user"
+    ? "environment"
+    : "user";
+
+  if (cameraStream) {
+    stopCamera();
+    btnOpenCamera.click();
+  }
+  }
   if (cameraStream) {
     cameraStream.getTracks().forEach(t => t.stop());
     cameraStream = null;
