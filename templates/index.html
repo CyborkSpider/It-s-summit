@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>It's Summit — Capture & Frame</title>
+  <meta name="framesnap-frame-url" content="{% static 'frame.png' %}" />
+  <meta name="framesnap-bg-url" content="{% static 'bg.jpg' %}" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-layer"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- App Shell -->
+  <div class="app-shell">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="brand-badge brand-left"><img class="brand-side" src="{% static 'Blue_YLY union.png' %}" alt="Brand" /></span>
+        <span class="logo-text">It's Summit</span>
+        <span class="brand-badge brand-right"><img class="brand-side" src="{% static 'Blue - Black.png' %}" alt="Brand" /></span>
+      </div>
+      <p class="logo-tagline">Capture · Frame · Share</p>
+      <div class="hashtag-strip" aria-label="hashtags">
+        <span class="hashtag" dir="ltr">#Think like a CEO</span>
+        <span class="hashtag" dir="rtl">#من الجلابيه للعالميه</span>
+      </div>
+    </header>
+
+    <!-- Step Tracker -->
+    <div class="steps-track">
+      <div class="step active" id="step-indicator-1">
+        <span class="step-num">1</span><span class="step-label">Source</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-indicator-3">
+        <span class="step-num">2</span><span class="step-label">Preview</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step-indicator-4">
+        <span class="step-num">3</span><span class="step-label">Export</span>
+      </div>
+    </div>
+
+    <!-- ── STEP 1: Source ─────────────────────────────── -->
+    <section class="card" id="section-source">
+      <h2 class="card-title">Choose Your Source</h2>
+
+      <!-- Camera panel -->
+      <div class="source-grid">
+        <div class="source-panel" id="camera-panel">
+          <div class="source-icon">📷</div>
+          <h3>Camera</h3>
+          <p>Take a live photo directly from your device camera.</p>
+          <button class="btn btn-primary" id="btn-open-camera">Open Camera</button>
+        </div>
+
+        <div class="source-divider">or</div>
+
+        <div class="source-panel" id="upload-panel">
+          <div class="source-icon">🖼️</div>
+          <h3>Upload Image</h3>
+          <p>Select an existing photo from your device.</p>
+          <label class="btn btn-secondary" for="file-input">Choose File</label>
+          <input type="file" id="file-input" accept="image/*" hidden />
+        </div>
+      </div>
+
+      <!-- Camera view (hidden until opened) -->
+      <div class="camera-container hidden" id="camera-container">
+        <video id="camera-preview" autoplay playsinline muted></video>
+        <div class="camera-controls">
+          <button class="btn btn-accent" id="btn-capture">📸 Capture</button>
+          <button class="btn btn-ghost" id="btn-close-camera">✕ Close</button>
+        </div>
+      </div>
+
+      <!-- Hidden canvas for camera snapshot -->
+      <canvas id="snapshot-canvas" hidden></canvas>
+    </section>
+
+    <!-- ── STEP 2: Preview ────────────────────────────── -->
+    <section class="card hidden" id="section-frame">
+      <h2 class="card-title">Preview</h2>
+      <p class="card-sub">Your image is automatically placed inside the frame.</p>
+
+      <div class="canvas-wrapper">
+        <canvas id="final-canvas"></canvas>
+      </div>
+
+      <div class="btn-row centered">
+        <button class="btn btn-ghost" id="btn-back-crop">← Back</button>
+        <button class="btn btn-accent" id="btn-apply-frame">Continue →</button>
+      </div>
+    </section>
+
+    <!-- ── STEP 3: Export ─────────────────────────────── -->
+    <section class="card hidden" id="section-export">
+      <h2 class="card-title">Your Image is Ready!</h2>
+      <p class="card-sub">Download or upload to the server.</p>
+
+      <div class="canvas-wrapper preview-final">
+        <canvas id="export-canvas"></canvas>
+      </div>
+
+      <div class="btn-row centered">
+        <button class="btn btn-primary" id="btn-download">⬇ Download PNG</button>
+        <button class="btn btn-accent" id="btn-upload-server">☁ Upload to Server</button>
+      </div>
+
+      <div id="upload-status" class="upload-status hidden"></div>
+
+      <button class="btn btn-ghost start-over" id="btn-start-over">↩ Start Over</button>
+    </section>
+
+  </div><!-- /app-shell -->
+
+  <footer class="site-footer">Made by Ziad Elgohary</footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+  <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
