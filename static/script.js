@@ -8,6 +8,8 @@
 // ─────────────────────────────────────────────────
 // State
 // ─────────────────────────────────────────────────
+let currentFacingMode = "user";
+let stream;
 let cameraStream   = null;
 let croppedDataURL = null;  // source image data URL
 let framedDataURL  = null;  // result after frame applied
